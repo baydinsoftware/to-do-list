@@ -1,0 +1,31 @@
+<!--add item to a user's to-do list-->
+{% extends "base.html" %}
+
+{% block title %}Add an Item{% endblock %}
+
+{% block content %}
+
+<h1>Add an item to {{list.owner |capfirst}}'s to-do list</h1>
+{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
+
+<form action="{% url 'todolist:add' list.id%}" method="post">
+{% csrf_token %}
+
+    <div class="fieldWrapper">
+        <label for="id_text">Item text:</label>
+        {{form.text}}
+    </div><div class="fieldWrapper">
+        <label for="id_priority">Item priority:</label>
+        {{form.priority}}
+    </div><div class="fieldWrapper">
+        <label for="id_completed">Item completed?</label>
+        {{form.completed}}
+    </div>
+
+    <br>
+
+    <input type="submit" class="buttons" value="Add item"/>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+    <style>
+    #sorter1, #sorter2, #sorter3{ 
+        list-style-type: none;
+        margin: 0; padding: 5px; width: 60%; 
+        background: #eee
+    }
+    #sorter1 li, #sorter2 li, #sorter3 li{
+        margin: 3px 3px 3px 3px;
+        padding: 0.8em; padding-left: 0.8em;
+        font-size: 1.0em; height: 10px;
+    }
+    #sorter1 li span, #sorter2 li span, #sorter3 li span{
+        position: absolute;
+        margin-left: -1.3em;
+    }
+    
+    h1 {
+        color:#408F24;
+        text-align:center;
+    }
+
+    #sidebar {
+        background:#eee;
+        float:right;
+        font-size:95%;
+        line-height:145%;
+        overflow:hidden;
+        padding-top:8px;
+        padding-bottom:8px;
+        width:100%;
+    }
+    #content { clear: both; }
+    #maincontent { float: left; }
+    </style>

@@ -1,0 +1,17 @@
+<!--main page that shows all users' to-do lists-->
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1> Baydin To-Do Lists </h1>
+{% if list_list %}
+    <ul id="main">
+    {% for list in list_list %}
+        <li><a href="/todolist/{{list.id}}/" id="list_link">{{list.owner | capfirst}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No lists are available.</p>
+{% endif %}
+
+{% endblock %}

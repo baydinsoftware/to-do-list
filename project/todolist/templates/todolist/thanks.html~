@@ -1,0 +1,12 @@
+<!--response page after a user has added an item-->
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<h2>Thanks! Your item has been added</h2>
+
+<a href="/todolist/{{ list.id }}/">Return to {{list.owner | capfirst}}'s to-do list</a>
+
+{% endblock %}

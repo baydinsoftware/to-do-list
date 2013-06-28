@@ -1,0 +1,120 @@
+<!--individual user's to-do list-->
+{% extends "base.html" %}
+
+{% block title %}{{list.owner |capfirst}}'s To-Do List{% endblock %}
+
+{% block content %}
+
+<h1>{{list.owner |capfirst}}'s To-Do List</h1>
+
+<a href="{% url 'todolist:report' list.id %}">View {{list.owner |capfirst}}'s report</a>
+<br>
+<a href="{% url 'todolist:add' list.id %}">Add an item to {{list.owner |capfirst}}'s to-do list</a>
+<br>
+<br>
+
+<!--radio buttons to filter to-do list-->
+<form action="." method="POST">
+    {% csrf_token %}
+    <label for="all">
+    <input type="radio" name="choice" value="all" id="all" {% if display_selection == 0 %} checked = "yes" {% endif %}/>Show all items
+    </label>
+    <label for="completed">
+    <input type="radio" name="choice" value="completed" id="completed" {% if display_selection == 1 %} checked = "yes" {% endif %}/>Show only completed items
+    </label>
+    <label for="incomplete">
+    <input type="radio" name="choice" value="incomplete" id="incomplete" class="rb" {% if display_selection == 2 %} checked = "yes" {% endif %}/>Show only incomplete items
+    </label>
+    <input type="submit" class="buttons" value="Filter"/>
+    <input type="hidden" name="form_type" value="filter_form"/>
+</form>
+
+<!--check if anything to display-->
+{% if to_display.count %}
+
+    <!--check if owner of the list. If so, show editable list-->
+    {% if isOwner %}
+        <form action="." method="POST"> 
+        {% csrf_token %}
+        
+        <p><b>Priority level 3:</b></p>
+        <ul id="sorter1">
+        {% for item in to_display %}
+            {% if item.priority == 3 %}
+                <li id="item_{{item.id}}" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <input type="checkbox" name="todelete" value="{{item.id}}"/>
+                    {{item.text}} -
+                    {% if item.completed %} Completed
+                    {% else %} Not Completed
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+
+        <p><b>Priority level 2:</b></p>
+        <ul id="sorter2">
+        {% for item in to_display %}
+            {% if item.priority == 2 %}
+                <li id="item_{{item.id}}" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <input type="checkbox" name="todelete" value="{{item.id}}"/>
+                    {{item.text}} -
+                    {% if item.completed %} Completed
+                    {% else %} Not Completed
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+
+        <p><b>Priority level 1:</b></p>
+        <ul id="sorter3">
+        {% for item in to_display %}
+            {% if item.priority == 1 %}
+                <li id="item_{{item.id}}" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <input type="checkbox" name="todelete" value="{{item.id}}"/>
+                    {{item.text}} -
+                    {% if item.completed %} Completed
+                    {% else %} Not Completed
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+        <br>
+        <input type="submit" name="change" class="buttons" value="Mark selected items as completed"/>
+        <input type="submit" name="change" class="buttons" value="Mark selected items as incomplete"/>
+        <input type="hidden" name="form_type" value="delete_form"/>
+        </form>
+
+    <!--If not owner, show not editable list-->
+    {% else %}
+        <ul>
+        <!--python equivalent of range(3,0,-1)-->
+        {% for i in "321" %}
+            <p id="priority_label">Priority level {{i}}:</p>
+            {% for item in to_display %}
+                <!--This is a really terrible hack to convert a string to an int, sorry-->
+                {% ifequal item.priority|add:"0" i|add:"0" %}
+                <li id="todo_item">
+                    {{item.text}} -
+                    {% if item.completed %} Completed
+                    {% else %} Not Completed
+                    {% endif %}
+                </li>
+                {% endifequal %}
+            {% endfor %}
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+<!--If nothing in list, show message-->
+{% else %}
+    <p id="priority_label">Either {{list.owner |capfirst}} has no items to do yet, or there are no items in the filter category you selected.</p>
+{% endif %}
+
+
+<br><br>
+<a href="{% url 'todolist:index' %}">Return to list of lists</a>
+
+{% endblock %}

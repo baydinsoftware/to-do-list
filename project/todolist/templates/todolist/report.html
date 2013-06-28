@@ -1,0 +1,15 @@
+<!--shows a progress report for the user-->
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<h1>{{list.owner |capfirst}}'s report</h1>
+
+<ul>
+    <li>Items assigned: {{item_count}}</li>
+    <li>Items completed: {{items_complete}} ({{percent_complete}}%)</li>
+</ul>
+
+{% endblock %}

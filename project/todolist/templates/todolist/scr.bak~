@@ -1,0 +1,48 @@
+    $(function() {
+        $("#sorter1").sortable({
+            placeholder: "empty",
+            connectWith: '#sorter2, #sorter3',
+            receive: function(event,ui) {
+                var new_list = $('#sorter1').sortable('serialize');
+                var moved = $(ui.item).index();
+                var display_mode = {{display_selection}}
+                $.ajax({
+                    type: "POST",
+                    data: new_list + '&moved=' + moved + '&display_mode=' + display_mode + '&new_level=3&csrfmiddlewaretoken={{csrf_token}}',
+                    url: ""
+                });
+            }
+        }).disableSelection();
+
+        $("#sorter2").sortable({
+            placeholder: "empty",
+            connectWith: '#sorter1, #sorter3',
+            receive: function(event,ui) {
+                var new_list = $('#sorter2').sortable('serialize');
+                var moved = $(ui.item).index();
+                var display_mode = {{display_selection}}
+                $.ajax({
+                    type: "POST",
+                    data: new_list + '&moved=' + moved + '&display_mode=' + display_mode + '&new_level=2&csrfmiddlewaretoken={{csrf_token}}',
+                    url: ""
+                });
+            },
+        }).disableSelection();
+
+        $("#sorter3").sortable({
+            placeholder: "empty",
+            connectWith: '#sorter1, #sorter2',
+            receive: function(event,ui) {
+                var new_list = $('#sorter3').sortable('serialize');
+                var moved = $(ui.item).index();
+                var display_mode = {{display_selection}}
+                $.ajax({
+                    type: "POST",
+                    data: new_list + '&moved=' + moved + '&display_mode=' + display_mode + '&new_level=1&csrfmiddlewaretoken={{csrf_token}}',
+                    url: ""
+                });
+            }
+        }).disableSelection();
+
+
+    });
