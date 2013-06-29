@@ -24,6 +24,10 @@ class ListItem(models.Model):
     priority = models.IntegerField(choices=priority_choices, default=3)
     completed = models.BooleanField(default=False)
     list = models.ForeignKey(ToDoList)
+    description = models.CharField(max_length=500)
+    assigner = models.CharField(max_length=200)
+    assigned_date = models.DateField(auto_now_add=True)
+    due_date = models.DateField(blank=True,null=True)
 
     def __str__(self):
         return self.text + " " + str(self.priority)

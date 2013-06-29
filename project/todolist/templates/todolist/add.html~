@@ -21,17 +21,20 @@
         <label for="id_completed">Item completed?</label>
         {{form.completed}}
     </div>
+    </div><div class="fieldWrapper">
+        <label for="id_description">Description:</label>
+        {{form.description}}
+    </div>
+    </div><div class="fieldWrapper">
+        <label for="id_due_date">Due date:</label>
+        {{form.due_date}}
+        (optional)
+    </div>
 
     <br>
 
-    <input type="submit" onclick="submitAlert()" class="buttons" value="Add item"/>
+    <input type="submit" class="buttons" value="Add item"/>
 
 </form>
 
-
-<script>
-function submitThanks(){
-    alert("Your item has been submitted. Thanks!");
-}
-</script>
 {% endblock %}

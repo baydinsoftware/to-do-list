@@ -5,8 +5,8 @@
     <title>{% block title %}Baydin to-do lists{% endblock %}</title>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
-    <!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
     <script>
     $(function() {
@@ -55,7 +55,26 @@
             }
         }).disableSelection();
 
+        $(".completed_box").click(function(){
+            var id = $(this).attr('id');
+            $.ajax({
+                type: "POST",
+                data: '&id=' + id + '&new_level=1&csrfmiddlewaretoken={{csrf_token}}',
+                url: ""
+            });
+        });
 
+        $(".list_text").dblclick(function(){
+            var id = $(this).attr('id');
+            var child = $(this).children("p");
+            $(child).slideToggle();
+        });
+
+        $(".non_owner_list_text").dblclick(function(){
+            var id = $(this).attr('id');
+            var child = $(this).children("p");
+            $(child).slideToggle();
+        });
     });
     </script>
 
@@ -67,7 +86,7 @@
         }
         #sorter1 li, #sorter2 li, #sorter3 li{
             margin:3px 3px 3px 3px;
-            padding:0.8em; padding-left:0.8em;
+            padding:0.8em; padding-left:0.3em;
             font-size:1.0em; height:10px;
         }
         #sorter1 li span, #sorter2 li span, #sorter3 li span{
@@ -95,13 +114,18 @@
 
         ul {list-style-type:square}
 
-        #todo_item {
-
-        }
-
         #priority_label {font-size:1.3em;}
 
         #list_link {font-size:1.3em;}
+
+        #todo_item {
+            width:60%;
+            margin:3px 3px 3px 3px;
+            padding:0.8em; padding-left:0.3em;
+            font-size:1.0em; height:10px;
+        }
+    
+        #non_owner_list {list-style-type:none;}
 
         #sidebar {
             background:#eee;
@@ -117,6 +141,13 @@
         }
         #content {clear:both;}
         #maincontent {float:left;}
+
+        .panel {
+            padding:0.8em;
+            display:none;
+            position:absolute;
+            width:50%
+        }
 
         .error {color:red;}
 

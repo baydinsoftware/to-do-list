@@ -7,22 +7,23 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.forms.extras.widgets import SelectDateWidget
 from django.db import transaction
 
 from todolist.models import ToDoList, ListItem
 
 #priority choices for different todolist items
 priority_choices = (
-    (1,'Low'),
-    (2,'Med'),
     (3,'High'),
+    (2,'Med'),
+    (1,'Low'),
 )
 
-#completed choices for different todolist items
-completed_choices = (
-    (True,True),
-    (False,False),
-)
+filter_choices = ( 
+    ('all', 'Show all items'), 
+    ('completed', 'Show only completed items'), 
+    ('incomplete', 'Show only incomplete items'), 
+) 
 
 #class that represents the main todo list view. shows all users' lists
 class ToDoView(generic.ListView):
@@ -36,7 +37,12 @@ class ToDoView(generic.ListView):
 class AddItemForm(forms.Form):
     text = forms.CharField(max_length = 200)
     priority = forms.ChoiceField(choices = priority_choices, initial = 3)
-    completed = forms.ChoiceField(choices = completed_choices, initial = False)
+    description = forms.CharField(widget=forms.Textarea)
+    due_date = forms.DateField(widget=SelectDateWidget(), required=False)
+
+#form for filtering results
+class FilterForm(forms.Form):
+    filter_field = forms.ChoiceField(choices=filter_choices, label='')
 
 #class that represents the form to add a user
 class AddUserForm(UserCreationForm):
@@ -66,6 +72,7 @@ def tdview(request,list_id):
     display_selection = 0
     completed_list = list.listitem_set.filter(completed = True)
     not_completed_list = list.listitem_set.filter(completed = False)
+    form = FilterForm()
 
     #user info variables
     username = request.user.username
@@ -80,24 +87,17 @@ def tdview(request,list_id):
     if request.method == 'POST':
         #did we get here from a form submission?
         if 'form_type' in request.POST:
-            #we need to mark some things as completed/incomplete
-            if request.POST['form_type'] == "delete_form":
-                to_update = request.POST.getlist('todelete')
-                update_list = ListItem.objects.filter(id__in=to_update)
-                for item in update_list:
-                    if "completed" in request.POST['change']:
-                        item.completed = True
-                    elif "incomplete" in request.POST['change']:
-                        item.completed = False
-                    item.save()
             #we need to filter the dislay list
-            elif request.POST['form_type'] == "filter_form":
-                if request.POST['choice'] == "completed":
-                    to_display = completed_list
-                    display_selection = 1
-                elif request.POST['choice'] == "incomplete":
-                    to_display = not_completed_list
-                    display_selection = 2
+            if request.POST['form_type'] == "filter_form":
+                form = FilterForm(request.POST)
+                if form.is_valid():
+                    text = form.cleaned_data['filter_field']
+                    if text == "completed":
+                        to_display = completed_list
+                        display_selection = 1
+                    elif text == "incomplete":
+                        to_display = not_completed_list
+                        display_selection = 2
         #user has rearranged the list. we need to update priority levels
         if 'item[]' in request.POST:
             new_list = request.POST.getlist('item[]')
@@ -105,7 +105,12 @@ def tdview(request,list_id):
             to_change = get_object_or_404(ListItem,pk=moved)
             to_change.priority = int(request.POST['new_level'])
             to_change.save()
-    return render(request,'todolist/todo.html',{'list': list, 'uname' : username, 'isOwner': isOwner, 'to_display': to_display, 'display_selection': display_selection})
+        #we need to mark some things as completed/incomplete
+        if 'id' in request.POST:
+            to_update = get_object_or_404(ListItem,pk=int(request.POST['id']))
+            to_update.completed = not to_update.completed
+            to_update.save()
+    return render(request,'todolist/todo.html',{'list': list, 'uname' : username, 'isOwner': isOwner, 'to_display': to_display, 'display_selection': display_selection, 'form' : form})
 
 #view that represents an individual's progress report
 @login_required
@@ -127,17 +132,14 @@ def add_new_item(request, list_id):
     if request.method == 'POST':
         form = AddItemForm(request.POST)
         if form.is_valid():
-            comp = form.cleaned_data['completed']
-            #cannot just store comp, as bool('False') evaluates to True. must check string val
-            if comp == 'False':
-                to_store = False
-            else:
-                to_store = True
             li = ListItem(
                 text = form.cleaned_data['text'],
                 priority = form.cleaned_data['priority'],
-                completed = to_store,
-                list = l
+                completed = False,
+                list = l,
+                description = form.cleaned_data['description'],
+                assigner = request.user.username,
+                due_date = form.cleaned_data['due_date'],
             )
             l.listitem_set.add(li)
             li.save()

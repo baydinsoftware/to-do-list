@@ -16,15 +16,7 @@
 <!--radio buttons to filter to-do list-->
 <form action="." method="POST">
     {% csrf_token %}
-    <label for="all">
-    <input type="radio" name="choice" value="all" id="all" {% if display_selection == 0 %} checked = "yes" {% endif %}/>Show all items
-    </label>
-    <label for="completed">
-    <input type="radio" name="choice" value="completed" id="completed" {% if display_selection == 1 %} checked = "yes" {% endif %}/>Show only completed items
-    </label>
-    <label for="incomplete">
-    <input type="radio" name="choice" value="incomplete" id="incomplete" class="rb" {% if display_selection == 2 %} checked = "yes" {% endif %}/>Show only incomplete items
-    </label>
+    {{form.as_p}}
     <input type="submit" class="buttons" value="Filter"/>
     <input type="hidden" name="form_type" value="filter_form"/>
 </form>
@@ -33,20 +25,20 @@
 {% if to_display.count %}
 
     <!--check if owner of the list. If so, show editable list-->
-    {% if isOwner %}
-        <form action="." method="POST"> 
-        {% csrf_token %}
-        
+    {% if isOwner %}        
         <p><b>Priority level 3:</b></p>
         <ul id="sorter1">
         {% for item in to_display %}
             {% if item.priority == 3 %}
-                <li id="item_{{item.id}}" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                    <input type="checkbox" name="todelete" value="{{item.id}}"/>
-                    {{item.text}} -
-                    {% if item.completed %} Completed
-                    {% else %} Not Completed
-                    {% endif %}
+                <li id="item_{{item.id}}" class="ui-state-default list_text">
+                    <input type="checkbox" name="todelete" value="{{item.id}}" {% if item.completed %} checked = "yes" {% endif %} class="completed_box" id="{{item.id}}"/>
+                    {{item.text}}
+                     <p class="ui-state-default panel">
+                        {{item.description}} <br><br>
+                        {% if item.due_date %} Due: {{item.due_date}} {% endif %} <br>
+                        Assigned by: {{item.assigner |capfirst}} <br>
+                        Assigned on: {{item.assigned_date}}
+                    </p>
                 </li>
             {% endif %}
         {% endfor %}
@@ -56,12 +48,15 @@
         <ul id="sorter2">
         {% for item in to_display %}
             {% if item.priority == 2 %}
-                <li id="item_{{item.id}}" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                    <input type="checkbox" name="todelete" value="{{item.id}}"/>
-                    {{item.text}} -
-                    {% if item.completed %} Completed
-                    {% else %} Not Completed
-                    {% endif %}
+                <li id="item_{{item.id}}" class="ui-state-default list_text">
+                    <input type="checkbox" name="todelete" value="{{item.id}}" {% if item.completed %} checked = "yes" {% endif %} class="completed_box" id="{{item.id}}"/>
+                    {{item.text}}
+                     <p class="ui-state-default panel">
+                        {{item.description}} <br><br>
+                        {% if item.due_date %} Due: {{item.due_date}} {% endif %} <br>
+                        Assigned by: {{item.assigner |capfirst}} <br>
+                        Assigned on: {{item.assigned_date}}
+                    </p>
                 </li>
             {% endif %}
         {% endfor %}
@@ -71,36 +66,39 @@
         <ul id="sorter3">
         {% for item in to_display %}
             {% if item.priority == 1 %}
-                <li id="item_{{item.id}}" class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                    <input type="checkbox" name="todelete" value="{{item.id}}"/>
-                    {{item.text}} -
-                    {% if item.completed %} Completed
-                    {% else %} Not Completed
-                    {% endif %}
+                <li id="item_{{item.id}}" class="ui-state-default list_text">
+                    <input type="checkbox" name="todelete" value="{{item.id}}" {% if item.completed %} checked = "yes" {% endif %} class="completed_box" id="{{item.id}}"/>
+                    {{item.text}}
+                     <p class="ui-state-default panel">
+                        {{item.description}} <br><br>
+                        {% if item.due_date %} Due: {{item.due_date}} {% endif %} <br>
+                        Assigned by: {{item.assigner |capfirst}} <br>
+                        Assigned on: {{item.assigned_date}}
+                    </p>
                 </li>
             {% endif %}
         {% endfor %}
         </ul>
         <br>
-        <input type="submit" name="change" class="buttons" value="Mark selected items as completed"/>
-        <input type="submit" name="change" class="buttons" value="Mark selected items as incomplete"/>
-        <input type="hidden" name="form_type" value="delete_form"/>
-        </form>
 
     <!--If not owner, show not editable list-->
     {% else %}
-        <ul>
-        <!--python equivalent of range(3,0,-1)-->
-        {% for i in "321" %}
+        <ul id="non_owner_list">
+        {% for i in "321" %} <!--python equivalent of range(3,0,-1)-->
             <p id="priority_label">Priority level {{i}}:</p>
             {% for item in to_display %}
-                <!--This is a really terrible hack to convert a string to an int, sorry-->
-                {% ifequal item.priority|add:"0" i|add:"0" %}
-                <li id="todo_item">
+                {% ifequal item.priority|add:"0" i|add:"0" %} <!--This is a really terrible hack to convert a string to an int, sorry-->
+                <li id="todo_item" class="ui-state-default non_owner_list_text">
                     {{item.text}} -
                     {% if item.completed %} Completed
                     {% else %} Not Completed
                     {% endif %}
+                     <p class="ui-state-default panel">
+                        {{item.description}} <br><br>
+                        {% if item.due_date %} Due: {{item.due_date}} {% endif %} <br>
+                        Assigned by: {{item.assigner |capfirst}} <br>
+                        Assigned on: {{item.assigned_date}}
+                    </p>
                 </li>
                 {% endifequal %}
             {% endfor %}
