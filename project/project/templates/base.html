@@ -89,6 +89,13 @@
             font-weight: 300; 
         }
 
+        h3 {
+            padding-top:10px;
+            font-size:35px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 200; 
+        }
+
         li {
             font-family: Helvetica, Arial, sans-serif;
         }
@@ -218,10 +225,17 @@
 <body>
     <div id="sidebar">
         {% block sidebar %}
+            <div align="right">
             {% if user.is_authenticated %}
-                <div align="right"><a href="/todolist/">home</a>
-                <a href="/accounts/logout/">logout</a></div>
+                <a href="/todolist/">home</a>
             {% endif %}
+            <a href="/help/">help</a>
+            {% if user.is_authenticated %}
+                <a href="/accounts/logout/">logout</a>
+            {% else %}
+                <a href="/accounts/login/">login</a>
+            {% endif %}
+            </div>
         {% endblock %}
     </div>
 

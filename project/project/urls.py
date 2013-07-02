@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^help/', 'todolist.views.help'),
     url(r'^todolist/', include('todolist.urls',namespace="todolist")),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'todolist.views.logout_view'),
@@ -24,5 +25,5 @@ urlpatterns = patterns('',
     #(r'^accounts/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', 
     #   {'post_reset_redirect' : '/accounts/password/done/'}),
     (r'^accounts/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm'),
-    (r'^accounts/password/done/$', 'django.contrib.auth.views.password_reset_complete')
+    (r'^accounts/password/done/$', 'django.contrib.auth.views.password_reset_complete'),
 )

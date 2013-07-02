@@ -1,0 +1,39 @@
+<!--registration page-->
+{% extends "base.html" %}
+
+{% block title %}To-do list help{% endblock %}
+
+{% block content %}
+<h1>To-do how-to:</h1>
+<h3>Accounts:</h3>
+<ul>
+    <li>You can create an account, by going to the <a href="http://127.0.0.1:8000/accounts/register/">registration page</a></li>
+    <li>Once your account has been created, you will be logged in and a to-do list will be created with your name and account information. You do not need to create a list.</li>
+    <li>If you forget your password, press the "Recover your password" link on the login page, or click <a href="http://127.0.0.1:8000/accounts/password/reset/">here</a></li>
+    <ul>
+        <li>Once you have provided a valid email address, a link with instructions to reset your password will be sent to you.</li>
+    </ul>
+</ul>
+
+<h3>Lists:</h3>
+<ul>
+    <li>A to-do list with your name and account information will be created upon registration. The <a href="http://127.0.0.1:8000/todolist/">main page</a> contains the to-do list for all the users.</li>
+    <li>Lists have different functionalities, depending on whether or not you are the owner of the list.</li>
+    <li>If you are the owner of the list you are viewing:</li>
+    <ul>
+        <li>Click and drag the list items to change the priority of the task.</li>
+        <li>To mark a task as completed, check the check box next to the item. Uncheck it to mark as incomplete.</li>
+        <li>Double click a list item to view more information on the task.</li>
+    </ul>
+    <li>If you are <b>not</b> the owner of the list you are viewing:</li>
+    <ul>
+        <li>Single click a list item to view more information on the task.</li>
+    </ul>
+    <li>Filter lists (owner and non-owner) by using the drop-down menu above the list.</li>
+    <li>You can assign tasks to users by pressing the link that says "Add an item to X's to-do list."</li>
+    <ul>
+        <li>All items except the due date are required.</li>
+    </ul>
+
+</ul>
+{% endblock %}

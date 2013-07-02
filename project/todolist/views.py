@@ -173,4 +173,7 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/accounts/login')
+
+def help(request):
+    return render(request,'help.html',{})
     
