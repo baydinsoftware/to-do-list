@@ -1,5 +1,8 @@
 <!--individual user's to-do list-->
 {% extends "base.html" %}
+{% load url from future %}
+{% load static %}
+
 
 {% block title %}{{list.owner |capfirst}}'s To-Do List{% endblock %}
 
@@ -7,8 +10,10 @@
 
 <h1>{{list.owner |capfirst}}'s To-Do List</h1>
 
+<img src="{{ STATIC_URL }}todolist/viewreport.png">
 <a href="{% url 'todolist:report' list.id %}">View {{list.owner |capfirst}}'s report</a>
 <br>
+<img src="{{ STATIC_URL }}todolist/additem.png">
 <a href="{% url 'todolist:add' list.id %}">Add an item to {{list.owner |capfirst}}'s to-do list</a>
 <br>
 <br>
@@ -26,7 +31,7 @@
 
     <!--check if owner of the list. If so, show editable list-->
     {% if isOwner %}        
-        <p><b>Priority level 3:</b></p>
+        <p id="priority_label">Priority level 3:</p>
         <ul id="sorter1">
         {% for item in to_display %}
             {% if item.priority == 3 %}
@@ -44,7 +49,7 @@
         {% endfor %}
         </ul>
 
-        <p><b>Priority level 2:</b></p>
+        <p id="priority_label">Priority level 2:</p>
         <ul id="sorter2">
         {% for item in to_display %}
             {% if item.priority == 2 %}
@@ -62,7 +67,7 @@
         {% endfor %}
         </ul>
 
-        <p><b>Priority level 1:</b></p>
+        <p id="priority_label">Priority level 1:</p>
         <ul id="sorter3">
         {% for item in to_display %}
             {% if item.priority == 1 %}

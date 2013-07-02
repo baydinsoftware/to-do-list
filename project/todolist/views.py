@@ -42,7 +42,7 @@ class AddItemForm(forms.Form):
 
 #form for filtering results
 class FilterForm(forms.Form):
-    filter_field = forms.ChoiceField(choices=filter_choices, label='')
+    filter_field = forms.ChoiceField(choices=filter_choices, label='', widget=forms.Select(attrs={'class':'filter_drop_down'}))
 
 #class that represents the form to add a user
 class AddUserForm(UserCreationForm):

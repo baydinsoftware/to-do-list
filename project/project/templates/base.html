@@ -4,6 +4,7 @@
 <head>
     <title>{% block title %}Baydin to-do lists{% endblock %}</title>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
 
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -79,6 +80,33 @@
     </script>
 
     <style>
+        @page { margin:200px; }
+
+        h1 {
+            padding-top:10px;
+            font-size:48px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300; 
+        }
+
+        li {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        body {background:#E0E6DF;}
+    
+        a {
+            font-family: 'Lato', sans-serif;
+            font-weight: 400; 
+            font-size:16px;
+        }
+        a:link {color:#006600;}
+        a:visited {color:#006600;} 
+        a:hover {color:#83A37E;}
+        a:active {color:#006600;}
+
+        ul {list-style-type:square}
+
         #sorter1, #sorter2, #sorter3{ 
             list-style-type:none;
             margin:0; padding:5px; width:60%; 
@@ -89,43 +117,22 @@
             padding:0.8em; padding-left:0.3em;
             font-size:1.0em; height:10px;
         }
-        #sorter1 li span, #sorter2 li span, #sorter3 li span{
-            position:absolute;
-            margin-left:-1.3em;
+
+        #priority_label {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight:bold;
         }
-
-        h1 {
-            text-align:center;
-            padding-top:10px;
-            font-family: Futura, "Trebuchet MS", Arial, sans-serif;
-            font-variant: small-caps;
-        }
-
-        body {background:#E0E6DF;}
-    
-        a {
-            font-family: Futura, "Trebuchet MS", Arial, sans-serif;
-            font-variant: small-caps;
-        }
-        a:link {color:#3D6E35;}
-        a:visited {color:#3D6E35;} 
-        a:hover {color:#83A37E;}
-        a:active {color:#3D6E35;}
-
-        ul {list-style-type:square}
-
-        #priority_label {font-size:1.3em;}
 
         #list_link {font-size:1.3em;}
 
         #todo_item {
             width:60%;
-            margin:3px 3px 3px 3px;
             padding:0.8em; padding-left:0.3em;
             font-size:1.0em; height:10px;
         }
     
-        #non_owner_list {list-style-type:none;}
+        #non_owner_list {margin-left:-30px; list-style-type:none;}
 
         #sidebar {
             background:#eee;
@@ -139,8 +146,31 @@
             padding-right:8px;
             width:100%;
         }
-        #content {clear:both;}
+        #content {
+            clear:both;
+            margin:100px;
+        }
         #maincontent {float:left;}
+
+        .filter_drop_down {
+	        background:-moz-linear-gradient( center top, #f9f9f9 5%, #e9e9e9 100% );
+	        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9');
+	        background-color:#f9f9f9;
+	        border:1px solid #dcdcdc;
+	        display:inline-block;
+	        color:#666666;
+	        font-family:arial;
+	        font-size:11px;
+	        font-weight:normal;
+	        padding:10px 10px;
+	        text-decoration:none;
+	        text-shadow:1px 1px 0px #ffffff;
+        }
+
+        .ui-state-default, .fieldWrapper {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 13px;
+        }
 
         .panel {
             padding:0.8em;

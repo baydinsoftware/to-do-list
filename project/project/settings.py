@@ -72,6 +72,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/home/ubuntu/django/project/todolist/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -158,7 +159,5 @@ LOGGING = {
 }
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'kedaniels34@gmail.com'
-EMAIL_HOST_PASSWORD = 'Hotmail1'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
